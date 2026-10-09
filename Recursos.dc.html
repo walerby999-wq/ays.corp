@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:#091022;color:#F1F4F9;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+a:hover{color:oklch(0.76 0.15 165)}
+input,select,textarea,button{font-family:inherit}
+::placeholder{color:#66738E}
+[data-noscrollbar]{scrollbar-width:none}
+[data-noscrollbar]::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(9,16,34,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.08)">
+  <div style="max-width:1200px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="Landing Cuadra v2.dc.html" style="display:flex;align-items:center"><img src="assets/ays-logo-horizontal.png" alt="ays corp" style="height:28px;width:auto;display:block"></img></a>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex;align-items:center;gap:24px;font-size:14px">
+        <a href="Landing Cuadra v2.dc.html#solucion" style="color:#AEB8CC" style-hover="color:#fff">Producto</a>
+        <a href="Landing Cuadra v2.dc.html#como" style="color:#AEB8CC" style-hover="color:#fff">Cómo funciona</a>
+        <a href="Landing Cuadra v2.dc.html#precios" style="color:#AEB8CC" style-hover="color:#fff">Precios</a>
+        <div onMouseEnter="{{ openRes }}" onMouseLeave="{{ closeRes }}" style="position:relative">
+          <button onClick="{{ toggleRes }}" style="border:0;background:transparent;padding:0;cursor:pointer;font-size:14px;color:#fff;display:flex;align-items:center;gap:6px">Recursos<span style="font-size:9px;display:inline-block;transform:{{ resRot }};transition:transform .2s">▼</span></button>
+          <sc-if value="{{ resOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:18px">
+              <div style="width:480px;background:#fff;border-radius:14px;border:1px solid #E3E7ED;box-shadow:0 24px 60px -16px rgba(0,0,0,0.5);padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                <sc-for list="{{ menuCols }}" as="col" hint-placeholder-count="2">
+                  <div style="display:flex;flex-direction:column;gap:2px;padding:10px">
+                    <span style="font-size:12px;font-weight:600;color:#8592AB;padding:4px 10px 10px">{{ col.title }}</span>
+                    <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="4">
+                      <a href="{{ it.href }}" onClick="{{ closeRes }}" style="display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:8px;color:#0E1729;background:{{ it.bg }}" style-hover="background:#F3F5F8;color:#0E1729">
+                        <span style="font-size:14px;font-weight:500">{{ it.title }}</span>
+                        <span style="font-size:12px;color:#5B6880;line-height:1.4">{{ it.short }}</span>
+                      </a>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </nav>
+    </sc-if>
+    <div style="display:flex;align-items:center;gap:12px">
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <a href="#demo" style="white-space:nowrap;padding:9px 16px;border-radius:8px;background:oklch(0.76 0.15 165);color:#06121F;font-size:14px;font-weight:600" style-hover="filter:brightness(1.08);color:#06121F">Solicitar demo</a>
+      </sc-if>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ toggleMenu }}" aria-label="Menú" style="width:44px;height:44px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+          <span style="width:16px;height:1.5px;background:#fff"></span><span style="width:16px;height:1.5px;background:#fff"></span><span style="width:16px;height:1.5px;background:#fff"></span>
+        </button>
+      </sc-if>
+    </div>
+  </div>
+  <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="max-height:calc(100vh - 64px);overflow-y:auto;border-top:1px solid rgba(255,255,255,0.08);padding:12px 24px 24px;display:flex;flex-direction:column;background:#091022">
+      <a href="Landing Cuadra v2.dc.html#solucion" style="color:#E3E8F2;font-size:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Producto</a>
+      <a href="Landing Cuadra v2.dc.html#precios" style="color:#E3E8F2;font-size:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)">Precios</a>
+      <sc-for list="{{ menuCols }}" as="col" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;padding:16px 0 8px;border-bottom:1px solid rgba(255,255,255,0.06)">
+          <span style="font-size:12px;font-weight:600;color:#66738E;padding-bottom:6px">Recursos · {{ col.title }}</span>
+          <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="4">
+            <a href="{{ it.href }}" onClick="{{ closeMenu }}" style="color:#E3E8F2;font-size:15px;padding:10px 0">{{ it.title }}</a>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+</header>
+
+<section style="padding:clamp(112px,12vw,148px) 24px 0;position:relative">
+  <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+    <span style="font-size:14px;color:#7F8BA6">Recursos <span style="color:#3A4766;padding:0 6px">/</span> <span style="color:oklch(0.76 0.15 165);font-weight:600">{{ meta.group }}</span></span>
+    <h1 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(40px,5.6vw,72px);line-height:1.02;letter-spacing:-0.022em;font-weight:700;text-wrap:balance">{{ meta.title }}</h1>
+    <p style="margin:0;font-size:clamp(17px,1.5vw,20px);line-height:1.6;color:#AEB8CC;max-width:680px;text-wrap:pretty">{{ meta.sub }}</p>
+    <div data-noscrollbar="" style="margin-top:20px;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;border-bottom:1px solid rgba(255,255,255,0.08)">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="7">
+        <a href="{{ tb.href }}" style="white-space:nowrap;padding:12px 14px;font-size:14px;font-weight:500;color:{{ tb.fg }};border-bottom:2px solid {{ tb.line }};margin-bottom:-1px" style-hover="color:#fff">{{ tb.title }}</a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<main style="padding:clamp(40px,5vw,64px) 24px clamp(80px,10vw,120px)">
+  <div style="max-width:1200px;margin:0 auto">
+
+    <sc-if value="{{ isAyuda }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:clamp(56px,7vw,88px)">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:12px;padding:6px 6px 6px 20px;border-radius:12px;border:1px solid rgba(255,255,255,0.14);background:#0D1730;max-width:720px">
+            <span style="width:14px;height:14px;border-radius:50%;border:2px solid #7F8BA6;flex-shrink:0"></span>
+            <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Busca un artículo: «conectar banco», «Norma 43», «diferencia»…" style="flex:1;min-width:0;border:0;background:transparent;color:#F1F4F9;font-size:16px;padding:12px 0;outline:none"></input>
+            <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearQ }}" style="border:0;background:rgba(255,255,255,0.08);color:#C7D0E0;border-radius:8px;padding:10px 14px;cursor:pointer;font-size:13px">Borrar</button></sc-if>
+          </div>
+          <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:720px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:#0D1730;overflow:hidden">
+              <div style="padding:12px 20px;font-size:13px;color:#7F8BA6;border-bottom:1px solid rgba(255,255,255,0.06)">{{ resultsLabel }}</div>
+              <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+                <a href="#ayuda" style="display:flex;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:15px" style-hover="background:rgba(255,255,255,0.03)"><span>{{ r.t }}</span><span style="font-size:13px;color:#7F8BA6;white-space:nowrap">{{ r.cat }}</span></a>
+              </sc-for>
+              <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:20px;font-size:15px;color:#AEB8CC">No hemos encontrado nada. <a href="#soporte" style="color:oklch(0.76 0.15 165);font-weight:500">Escríbenos y te respondemos hoy.</a></div>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Categorías principales</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px">
+            <sc-for list="{{ helpCats }}" as="c" hint-placeholder-count="4">
+              <div style="padding:26px;border-radius:14px;background:#0D1730;border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:18px;transition:border-color .2s" style-hover="border-color:rgba(255,255,255,0.22)">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                  <h3 style="margin:0;font-family:'Outfit',sans-serif;font-size:20px;font-weight:600">{{ c.name }}</h3>
+                  <span style="font-size:13px;color:#7F8BA6;white-space:nowrap">{{ c.count }} artículos</span>
+                </div>
+                <p style="margin:0;font-size:14px;line-height:1.55;color:#AEB8CC">{{ c.desc }}</p>
+                <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.08)">
+                  <sc-for list="{{ c.arts }}" as="a" hint-placeholder-count="3">
+                    <a href="#ayuda" style="padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;color:#E3E8F2;display:flex;justify-content:space-between;gap:12px">{{ a }}<span style="color:#66738E">→</span></a>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:40px 64px">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Preguntas frecuentes</h2>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:#AEB8CC">Lo que más nos preguntan directores financieros y gerentes antes de empezar.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.1);grid-column:span 2;min-width:0">
+            <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="6">
+              <div style="border-bottom:1px solid rgba(255,255,255,0.1)">
+                <button onClick="{{ f.toggle }}" style="width:100%;border:0;background:transparent;color:#F1F4F9;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:22px 0;text-align:left;font-size:17px;font-weight:500">{{ f.q }}<span style="font-size:22px;font-weight:300;color:#7F8BA6;flex-shrink:0">{{ f.sign }}</span></button>
+                <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                  <p style="margin:0 0 22px;font-size:15px;line-height:1.7;color:#AEB8CC;max-width:680px">{{ f.a }}</p>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:clamp(28px,4vw,40px);border-radius:16px;background:#0D1730;border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:28px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(24px,2.6vw,30px);font-weight:600">¿No encuentras lo que buscas?</h2>
+            <p style="margin:0;font-size:15px;color:#AEB8CC">Nuestro equipo de soporte está formado por especialistas en contabilidad, no por un bot.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px">
+            <sc-for list="{{ contactOpts }}" as="c" hint-placeholder-count="3">
+              <a href="{{ c.href }}" style="padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:6px" style-hover="border-color:oklch(0.76 0.15 165);color:#F1F4F9">
+                <span style="font-size:16px;font-weight:600">{{ c.t }}</span>
+                <span style="font-size:14px;color:#AEB8CC">{{ c.d }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDocs }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:56px;align-items:flex-start">
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <aside style="width:220px;flex-shrink:0;position:sticky;top:96px;display:flex;flex-direction:column;gap:2px;font-size:14px">
+            <span style="font-size:12px;font-weight:600;color:#66738E;padding:0 12px 10px">En esta página</span>
+            <sc-for list="{{ docNav }}" as="d" hint-placeholder-count="6">
+              <button onClick="{{ d.go }}" style="text-align:left;border:0;background:transparent;color:#AEB8CC;cursor:pointer;padding:9px 12px;border-radius:8px;font-size:14px" style-hover="background:rgba(255,255,255,0.05);color:#fff">{{ d.t }}</button>
+            </sc-for>
+            <div style="margin-top:20px;padding:16px 12px;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:6px;font-size:13px;color:#7F8BA6">
+              <span>Versión de la API</span>
+              <span style="font-family:'Geist Mono',monospace;color:#E3E8F2">v1 · 2026-09-15</span>
+            </div>
+          </aside>
+        </sc-if>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(56px,6vw,80px)">
+          <div id="doc-intro" style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Introducción</h2>
+            <p style="margin:0;font-size:16px;line-height:1.7;color:#AEB8CC;max-width:720px">La API REST de Cuadrā te permite enviar documentos, lanzar cuadres y recibir incidencias directamente en tu ERP o herramienta interna. Todas las peticiones usan JSON sobre HTTPS y la URL base es <span style="font-family:'Geist Mono',monospace;color:#E3E8F2;font-size:14px">https://api.cuadra.app/v1</span>.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px">
+              <sc-for list="{{ docFacts }}" as="x" hint-placeholder-count="3">
+                <div style="padding:18px;border-radius:12px;background:#0D1730;border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:#7F8BA6">{{ x.k }}</span><span style="font-size:15px;font-weight:500">{{ x.v }}</span></div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div id="doc-auth" style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Autenticación y primera petición</h2>
+            <p style="margin:0;font-size:16px;line-height:1.7;color:#AEB8CC;max-width:720px">Genera una clave en <span style="color:#E3E8F2">Ajustes → API</span>. Cada clave tiene ámbitos (lectura, escritura, webhooks) y puede limitarse a una empresa concreta. Envíala en la cabecera <span style="font-family:'Geist Mono',monospace;color:#E3E8F2;font-size:14px">Authorization</span>.</p>
+            <div style="border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#060C1B;overflow:hidden">
+              <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:12px;color:#7F8BA6"><span>Petición · cURL</span><span>POST /v1/reconciliations</span></div>
+              <pre style="margin:0;padding:18px 16px;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.75;color:#C7D0E0;overflow-x:auto">{{ codeReq }}</pre>
+            </div>
+            <div style="border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#060C1B;overflow:hidden">
+              <div style="display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:12px;color:#7F8BA6"><span>Respuesta · 201 Created</span><span>application/json</span></div>
+              <pre style="margin:0;padding:18px 16px;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.75;color:#C7D0E0;overflow-x:auto">{{ codeRes }}</pre>
+            </div>
+          </div>
+
+          <div id="doc-endpoints" style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Endpoints principales</h2>
+            <div style="border-radius:12px;border:1px solid rgba(255,255,255,0.08);overflow:hidden">
+              <sc-for list="{{ endpoints }}" as="e" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:8px 24px;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06);background:#0D1730;align-items:center">
+                  <span style="display:flex;align-items:center;gap:12px;font-family:'Geist Mono',monospace;font-size:13px;min-width:0"><span style="width:52px;flex-shrink:0;text-align:center;padding:3px 0;border-radius:5px;font-size:11px;font-weight:500;background:{{ e.bg }};color:{{ e.fg }}">{{ e.m }}</span><span style="color:#E3E8F2;overflow-wrap:anywhere">{{ e.p }}</span></span>
+                  <span style="font-size:14px;color:#AEB8CC;line-height:1.5">{{ e.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div id="doc-webhooks" style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Webhooks</h2>
+            <p style="margin:0;font-size:16px;line-height:1.7;color:#AEB8CC;max-width:720px">Recibe eventos en tiempo real en lugar de consultar la API. Cada envío va firmado con HMAC-SHA256 en la cabecera <span style="font-family:'Geist Mono',monospace;color:#E3E8F2;font-size:14px">Cuadra-Signature</span> y, si tu servidor no responde con 2xx, se reintenta con espera exponencial durante 24 horas.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px">
+              <sc-for list="{{ webhooks }}" as="w" hint-placeholder-count="4">
+                <div style="padding:18px 20px;border-radius:12px;background:#0D1730;border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:8px">
+                  <span style="font-family:'Geist Mono',monospace;font-size:13px;color:oklch(0.76 0.15 165)">{{ w.e }}</span>
+                  <span style="font-size:14px;line-height:1.55;color:#AEB8CC">{{ w.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div id="doc-formats" style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Formatos de importación</h2>
+            <p style="margin:0;font-size:16px;line-height:1.7;color:#AEB8CC;max-width:720px">Puedes subir archivos desde la aplicación o mediante <span style="font-family:'Geist Mono',monospace;color:#E3E8F2;font-size:14px">POST /v1/documents</span>. Tamaño máximo por archivo: 50 MB.</p>
+            <div style="border-radius:12px;border:1px solid rgba(255,255,255,0.08);overflow-x:auto">
+              <div style="min-width:640px">
+                <div style="display:grid;grid-template-columns:1fr 1.2fr 1.6fr;gap:16px;padding:12px 20px;font-size:12px;font-weight:600;color:#7F8BA6;background:#0A1329"><span>Formato</span><span>Origen habitual</span><span>Cómo se procesa</span></div>
+                <sc-for list="{{ formats }}" as="x" hint-placeholder-count="5">
+                  <div style="display:grid;grid-template-columns:1fr 1.2fr 1.6fr;gap:16px;padding:16px 20px;border-top:1px solid rgba(255,255,255,0.06);background:#0D1730;font-size:14px;line-height:1.5">
+                    <span style="font-weight:600">{{ x.f }}</span><span style="color:#AEB8CC">{{ x.o }}</span><span style="color:#AEB8CC">{{ x.n }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div id="doc-security" style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Seguridad de los datos</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px">
+              <sc-for list="{{ security }}" as="s" hint-placeholder-count="4">
+                <div style="padding:22px;border-radius:12px;background:#0D1730;border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:8px">
+                  <span style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:600">{{ s.t }}</span>
+                  <span style="font-size:14px;line-height:1.6;color:#AEB8CC">{{ s.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <a href="#soporte" style="align-self:flex-start;padding:13px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.18);font-size:15px;font-weight:500" style-hover="background:rgba(255,255,255,0.05);color:#fff">Solicitar el dossier de seguridad (DPA) →</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isBlog }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:40px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ blogCats }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.pick }}" style="border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};padding:9px 16px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:500">{{ c.name }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ showFeatured }}" hint-placeholder-val="{{ true }}">
+          <a href="#blog" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));border-radius:16px;overflow:hidden;background:#0D1730;border:1px solid rgba(255,255,255,0.08)" style-hover="border-color:rgba(255,255,255,0.22);color:#F1F4F9">
+            <div style="min-height:300px;background:repeating-linear-gradient(135deg,#13204A 0 10px,#0F1A3B 10px 20px);display:flex;align-items:flex-end;padding:16px"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#7F8BA6;background:#0A1329;padding:4px 8px;border-radius:4px">imagen de portada</span></div>
+            <div style="padding:clamp(28px,4vw,48px);display:flex;flex-direction:column;justify-content:center;gap:18px">
+              <span style="display:flex;gap:12px;font-size:13px;color:#7F8BA6"><span style="color:oklch(0.76 0.15 165);font-weight:600">{{ featured.cat }}</span>{{ featured.date }} · {{ featured.read }} de lectura</span>
+              <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(28px,3.2vw,40px);line-height:1.1;font-weight:600;letter-spacing:-0.015em;text-wrap:balance">{{ featured.t }}</h2>
+              <p style="margin:0;font-size:16px;line-height:1.65;color:#AEB8CC">{{ featured.x }}</p>
+              <span style="font-size:15px;font-weight:600;color:oklch(0.76 0.15 165)">Leer artículo →</span>
+            </div>
+          </a>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:20px">
+          <sc-for list="{{ posts }}" as="p" hint-placeholder-count="6">
+            <a href="#blog" style="display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#0D1730;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" style-hover="transform:translateY(-3px);border-color:rgba(255,255,255,0.2);color:#F1F4F9">
+              <div style="height:180px;background:repeating-linear-gradient(135deg,#13204A 0 10px,#0F1A3B 10px 20px);display:flex;align-items:flex-end;padding:12px"><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#7F8BA6;background:#0A1329;padding:3px 7px;border-radius:4px">imagen</span></div>
+              <div style="padding:22px;display:flex;flex-direction:column;gap:12px;flex:1">
+                <span style="font-size:13px;color:oklch(0.76 0.15 165);font-weight:600">{{ p.cat }}</span>
+                <h3 style="margin:0;font-family:'Outfit',sans-serif;font-size:20px;line-height:1.25;font-weight:600;text-wrap:balance">{{ p.t }}</h3>
+                <p style="margin:0;font-size:14px;line-height:1.6;color:#AEB8CC;flex:1">{{ p.x }}</p>
+                <span style="font-size:13px;color:#7F8BA6">{{ p.date }} · {{ p.read }} de lectura</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isGlosario }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:64px;z-index:5;background:#091022;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
+          <input value="{{ gq }}" onChange="{{ onGq }}" placeholder="Filtra términos: «caja», «IVA», «conciliación»…" style="max-width:520px;width:100%;padding:13px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.14);background:#0D1730;color:#F1F4F9;font-size:15px;outline:none" style-focus="border-color:oklch(0.76 0.15 165)"></input>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            <sc-for list="{{ letters }}" as="l" hint-placeholder-count="26">
+              <button onClick="{{ l.go }}" disabled="{{ l.off }}" style="width:34px;height:34px;border-radius:7px;border:0;background:{{ l.bg }};color:{{ l.fg }};cursor:pointer;font-size:14px;font-weight:600">{{ l.ch }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ glossGroups }}" as="g" hint-placeholder-count="5">
+          <div id="{{ g.id }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),auto));gap:16px 48px;align-items:start">
+            <span style="font-family:'Outfit',sans-serif;font-size:56px;font-weight:600;line-height:1;color:#3A4766;width:80px">{{ g.ch }}</span>
+            <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.1);min-width:0">
+              <sc-for list="{{ g.terms }}" as="tm" hint-placeholder-count="2">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px 40px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.1)">
+                  <h3 style="margin:0;font-family:'Outfit',sans-serif;font-size:20px;font-weight:600">{{ tm.t }}</h3>
+                  <div style="display:flex;flex-direction:column;gap:10px;grid-column:span 2">
+                    <p style="margin:0;font-size:15px;line-height:1.7;color:#C7D0E0;text-wrap:pretty">{{ tm.d }}</p>
+                    <span style="font-size:13px;line-height:1.55;color:#7F8BA6">{{ tm.ex }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noGloss }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:16px;color:#AEB8CC">Ningún término coincide con tu búsqueda.</p></sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isEventos }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:clamp(56px,7vw,88px)">
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Próximos webinars</h2>
+          <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.1)">
+            <sc-for list="{{ upcoming }}" as="e" hint-placeholder-count="3">
+              <div style="display:flex;flex-wrap:wrap;gap:20px 40px;padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.1);align-items:center">
+                <div style="display:flex;flex-direction:column;gap:2px;width:120px;flex-shrink:0">
+                  <span style="font-family:'Outfit',sans-serif;font-size:44px;font-weight:600;line-height:1">{{ e.day }}</span>
+                  <span style="font-size:14px;color:#AEB8CC">{{ e.month }} · {{ e.time }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;min-width:min(100%,280px);flex:1">
+                  <span style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px"><span style="white-space:nowrap;padding:3px 8px;border-radius:5px;background:rgba(52,211,153,0.12);color:oklch(0.76 0.15 165);font-weight:600">En directo · Online</span><span style="white-space:nowrap;padding:3px 8px;border-radius:5px;background:rgba(255,255,255,0.06);color:#C7D0E0">{{ e.dur }}</span></span>
+                  <h3 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(20px,2vw,24px);font-weight:600;line-height:1.25;text-wrap:balance">{{ e.t }}</h3>
+                  <span style="font-size:14px;color:#AEB8CC">{{ e.who }}</span>
+                </div>
+                <button onClick="{{ e.pick }}" style="flex-shrink:0;border:0;cursor:pointer;padding:13px 20px;border-radius:10px;background:oklch(0.76 0.15 165);color:#06121F;font-size:15px;font-weight:600;white-space:nowrap">Inscribirme</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Sesiones grabadas</h2>
+            <p style="margin:0;font-size:15px;color:#AEB8CC">Disponibles bajo demanda, con las diapositivas descargables.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:20px">
+            <sc-for list="{{ past }}" as="p" hint-placeholder-count="3">
+              <a href="#eventos" style="display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#0D1730;border:1px solid rgba(255,255,255,0.08)" style-hover="border-color:rgba(255,255,255,0.22);color:#F1F4F9">
+                <div style="position:relative;aspect-ratio:16/9;background:repeating-linear-gradient(135deg,#13204A 0 10px,#0F1A3B 10px 20px);display:grid;place-items:center">
+                  <span style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.92);display:grid;place-items:center"><span style="width:0;height:0;border-left:16px solid #091022;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px"></span></span>
+                  <span style="position:absolute;right:10px;bottom:10px;font-family:'Geist Mono',monospace;font-size:12px;background:rgba(6,12,27,0.85);padding:3px 7px;border-radius:4px">{{ p.dur }}</span>
+                  <span style="position:absolute;left:10px;top:10px;font-family:'Geist Mono',monospace;font-size:11px;color:#7F8BA6;background:#0A1329;padding:3px 7px;border-radius:4px">miniatura del vídeo</span>
+                </div>
+                <div style="padding:20px;display:flex;flex-direction:column;gap:8px">
+                  <h3 style="margin:0;font-family:'Outfit',sans-serif;font-size:19px;line-height:1.3;font-weight:600">{{ p.t }}</h3>
+                  <span style="font-size:13px;color:#7F8BA6">{{ p.date }} · {{ p.views }}</span>
+                </div>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div id="ev-form" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:40px;padding:clamp(28px,4vw,48px);border-radius:16px;background:#0D1730;border:1px solid rgba(255,255,255,0.08)">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Inscripción rápida</h2>
+            <p style="margin:0;font-size:15px;line-height:1.65;color:#AEB8CC">Te enviaremos el enlace de acceso y un recordatorio una hora antes. Si no puedes asistir, recibirás la grabación.</p>
+          </div>
+          <sc-if value="{{ evDone }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px;justify-content:center">
+              <span style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:600;color:oklch(0.76 0.15 165)">Plaza reservada</span>
+              <span style="font-size:15px;line-height:1.6;color:#C7D0E0">{{ evSelTitle }}. Revisa tu bandeja de entrada para añadirlo al calendario.</span>
+              <button onClick="{{ evReset }}" style="align-self:flex-start;margin-top:8px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#F1F4F9;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px">Inscribirme en otro</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ evNotDone }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ evSubmit }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px">
+              <label style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#C7D0E0">Webinar
+                <select value="{{ evSel }}" onChange="{{ onEvSel }}" style="padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);background:#0A1329;color:#F1F4F9;font-size:15px">
+                  <sc-for list="{{ upcoming }}" as="e" hint-placeholder-count="3"><option value="{{ e.id }}">{{ e.day }} {{ e.month }} — {{ e.t }}</option></sc-for>
+                </select>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#C7D0E0">Nombre<input required="" style="padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);background:#0A1329;color:#F1F4F9;font-size:15px;outline:none" style-focus="border-color:oklch(0.76 0.15 165)"></input></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#C7D0E0">Email corporativo<input required="" type="email" style="padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);background:#0A1329;color:#F1F4F9;font-size:15px;outline:none" style-focus="border-color:oklch(0.76 0.15 165)"></input></label>
+              <button type="submit" style="grid-column:1/-1;border:0;cursor:pointer;padding:14px;border-radius:10px;background:oklch(0.76 0.15 165);color:#06121F;font-size:15px;font-weight:600">Reservar mi plaza</button>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,80px);align-items:start">
+        <div style="display:flex;flex-direction:column;gap:40px">
+          <div style="display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(255,255,255,0.1)">
+            <sc-for list="{{ demoPoints }}" as="d" hint-placeholder-count="4">
+              <div style="display:flex;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.1)">
+                <span style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:oklch(0.76 0.15 165);width:24px;flex-shrink:0;padding-top:3px">{{ d.n }}</span>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <h3 style="margin:0;font-family:'Outfit',sans-serif;font-size:20px;font-weight:600">{{ d.t }}</h3>
+                  <p style="margin:0;font-size:15px;line-height:1.6;color:#AEB8CC">{{ d.d }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:14px;font-weight:600;color:#7F8BA6">Agenda de la llamada</span>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)">
+              <sc-for list="{{ agenda }}" as="a" hint-placeholder-count="3">
+                <div style="flex:{{ a.w }};padding:14px;border-right:1px solid rgba(255,255,255,0.1);background:{{ a.bg }};display:flex;flex-direction:column;gap:4px;min-width:0">
+                  <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#7F8BA6">{{ a.m }}</span>
+                  <span style="font-size:13px;line-height:1.4;color:#E3E8F2">{{ a.t }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:#7F8BA6">Puedes enviarnos los documentos antes o subirlos durante la llamada. Si lo necesitas, firmamos un acuerdo de confidencialidad previo.</p>
+          </div>
+        </div>
+
+        <div style="border-radius:16px;background:#fff;color:#0E1729;padding:clamp(24px,3vw,36px);box-shadow:0 40px 80px -30px rgba(0,0,0,0.6)">
+          <sc-if value="{{ demoDone }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:460px;display:flex;flex-direction:column;justify-content:center;gap:14px">
+              <span style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:600">Demo agendada</span>
+              <p style="margin:0;font-size:16px;line-height:1.6;color:#475569">{{ demoSummary }}</p>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:#5B6880">Te hemos enviado la invitación y un enlace seguro para subir tus documentos con antelación.</p>
+              <button onClick="{{ demoReset }}" style="align-self:flex-start;margin-top:8px;border:1px solid #CBD2DC;background:#fff;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px">Cambiar fecha</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ demoNotDone }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ demoSubmit }}" style="display:flex;flex-direction:column;gap:18px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px">
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Nombre y apellidos<input required="" style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;outline:none;background:#FAFBFC" style-focus="border-color:#0E1729;background:#fff"></input></label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Email corporativo<input required="" type="email" placeholder="nombre@empresa.es" style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;outline:none;background:#FAFBFC" style-focus="border-color:#0E1729;background:#fff"></input></label>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:13px;font-weight:500;color:#334155">Tamaño de la empresa</span>
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px">
+                  <sc-for list="{{ sizes }}" as="s" hint-placeholder-count="4">
+                    <button type="button" onClick="{{ s.pick }}" style="padding:11px 4px;border-radius:8px;border:1px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }};cursor:pointer;font-size:14px;font-weight:500">{{ s.l }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Volumen de facturas al mes
+                <select style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;background:#FAFBFC;color:#0E1729">
+                  <option>Menos de 200</option><option>200 – 1.000</option><option>1.000 – 5.000</option><option>Más de 5.000</option>
+                </select>
+              </label>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:13px;font-weight:500;color:#334155">Elige día</span>
+                <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px">
+                  <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+                    <button type="button" onClick="{{ d.pick }}" style="padding:10px 2px;border-radius:8px;border:1px solid {{ d.bd }};background:{{ d.bg }};color:{{ d.fg }};cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px">
+                      <span style="font-size:12px;text-transform:capitalize">{{ d.wd }}</span><span style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600">{{ d.n }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:13px;font-weight:500;color:#334155">Hora (CET)</span>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px">
+                  <sc-for list="{{ times }}" as="t" hint-placeholder-count="5">
+                    <button type="button" onClick="{{ t.pick }}" style="padding:10px 4px;border-radius:8px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};cursor:pointer;font-size:14px;font-weight:500;font-variant-numeric:tabular-nums">{{ t.l }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <button type="submit" style="border:0;cursor:pointer;padding:15px;border-radius:10px;background:#091022;color:#fff;font-size:16px;font-weight:600" style-hover="background:#16244A">Confirmar demo · {{ slotLabel }}</button>
+              <span style="font-size:12px;line-height:1.5;color:#5B6880">Sin compromiso. Tratamos tus datos conforme al RGPD y solo para gestionar esta demo.</span>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSoporte }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:clamp(56px,7vw,88px)">
+        <div style="border-radius:16px;background:#0D1730;border:1px solid rgba(255,255,255,0.08);overflow:hidden">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,0.08)">
+            <span style="display:flex;align-items:center;gap:12px;font-family:'Outfit',sans-serif;font-size:20px;font-weight:600"><span style="width:10px;height:10px;border-radius:50%;background:oklch(0.76 0.15 165);box-shadow:0 0 0 5px rgba(52,211,153,0.15)"></span>Todos los sistemas operativos</span>
+            <span style="font-size:13px;color:#7F8BA6">Actualizado hace 2 min · últimos 60 días</span>
+          </div>
+          <sc-for list="{{ status }}" as="s" hint-placeholder-count="4">
+            <div style="padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;gap:12px;font-size:14px"><span style="font-weight:500">{{ s.n }}</span><span style="color:#AEB8CC;font-variant-numeric:tabular-nums">{{ s.u }} disponibilidad</span></div>
+              <div style="display:flex;gap:2px;height:26px">
+                <sc-for list="{{ s.bars }}" as="b" hint-placeholder-count="60"><span style="flex:1;border-radius:2px;background:{{ b.c }}"></span></sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:40px">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-0.015em">Tiempos de respuesta garantizados</h2>
+            <p style="margin:0;font-size:15px;line-height:1.65;color:#AEB8CC">Primer contacto de una persona del equipo. Incluido en tu contrato, no es una estimación.</p>
+            <div style="border-radius:12px;border:1px solid rgba(255,255,255,0.08);overflow:hidden">
+              <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:12px;padding:12px 18px;background:#0A1329;font-size:12px;font-weight:600;color:#7F8BA6"><span>Plan</span><span>Incidencia crítica</span><span>Consulta normal</span></div>
+              <sc-for list="{{ sla }}" as="s" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:12px;padding:16px 18px;border-top:1px solid rgba(255,255,255,0.06);background:#0D1730;font-size:14px;align-items:center">
+                  <span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:600">{{ s.p }}</span><span style="font-size:12px;color:#7F8BA6">{{ s.c }}</span></span>
+                  <span style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;color:{{ s.col }}">{{ s.crit }}</span>
+                  <span style="color:#C7D0E0">{{ s.norm }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:24px;border-radius:14px;border:1px solid oklch(0.76 0.15 165 / 0.35);background:linear-gradient(180deg,rgba(52,211,153,0.06),transparent);display:flex;flex-direction:column;gap:16px">
+              <span style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600">Atención prioritaria Enterprise</span>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px">
+                <sc-for list="{{ entChannels }}" as="c" hint-placeholder-count="4">
+                  <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:500">{{ c.t }}</span><span style="font-size:13px;line-height:1.5;color:#AEB8CC">{{ c.d }}</span></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="border-radius:16px;background:#fff;color:#0E1729;padding:clamp(24px,3vw,36px)">
+            <sc-if value="{{ ticketDone }}" hint-placeholder-val="{{ false }}">
+              <div style="min-height:420px;display:flex;flex-direction:column;justify-content:center;gap:12px">
+                <span style="font-family:'Geist Mono',monospace;font-size:13px;color:#5B6880">Ticket #CS-48213</span>
+                <span style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:600">Lo tenemos</span>
+                <p style="margin:0;font-size:16px;line-height:1.6;color:#475569">{{ ticketMsg }}</p>
+                <button onClick="{{ ticketReset }}" style="align-self:flex-start;margin-top:8px;border:1px solid #CBD2DC;background:#fff;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px">Abrir otro ticket</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ ticketNotDone }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ ticketSubmit }}" style="display:flex;flex-direction:column;gap:16px">
+                <span style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:600">Abrir un ticket</span>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px">
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Email de la cuenta<input required="" type="email" style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;outline:none;background:#FAFBFC" style-focus="border-color:#0E1729;background:#fff"></input></label>
+                  <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Categoría
+                    <select style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;background:#FAFBFC;color:#0E1729"><option>Conexión bancaria</option><option>Importación de documentos</option><option>Resultado de un cuadre</option><option>API e integraciones</option><option>Facturación y cuenta</option></select>
+                  </label>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <span style="font-size:13px;font-weight:500;color:#334155">Prioridad</span>
+                  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px">
+                    <sc-for list="{{ prios }}" as="p" hint-placeholder-count="4">
+                      <button type="button" onClick="{{ p.pick }}" style="padding:10px 4px;border-radius:8px;border:1px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.fg }};cursor:pointer;font-size:14px;font-weight:500">{{ p.l }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Asunto<input required="" placeholder="Ej. El extracto de BBVA de octubre no se importa" style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;outline:none;background:#FAFBFC" style-focus="border-color:#0E1729;background:#fff"></input></label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#334155">Descripción<textarea required="" rows="4" placeholder="Qué esperabas que ocurriera y qué ha ocurrido. Si puedes, indica el ID del documento o del cuadre." style="padding:12px 14px;border-radius:8px;border:1px solid #CBD2DC;font-size:15px;outline:none;resize:vertical;background:#FAFBFC" style-focus="border-color:#0E1729;background:#fff"></textarea></label>
+                <label style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:8px;border:1px dashed #CBD2DC;font-size:14px;color:#5B6880;cursor:pointer">Adjuntar capturas o archivos (máx. 20 MB)<input type="file" multiple="" style="display:none"></input></label>
+                <button type="submit" style="border:0;cursor:pointer;padding:15px;border-radius:10px;background:#091022;color:#fff;font-size:16px;font-weight:600" style-hover="background:#16244A">Enviar ticket</button>
+              </form>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</main>
+
+<section style="padding:0 24px clamp(64px,8vw,96px)">
+  <div style="max-width:1200px;margin:0 auto;padding:clamp(32px,5vw,56px);border-radius:20px;background:#F1F4F9;color:#0E1729;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:620px">
+      <h2 style="margin:0;font-family:'Outfit',sans-serif;font-size:clamp(28px,3.4vw,42px);line-height:1.08;font-weight:700;letter-spacing:-0.02em;text-wrap:balance">Cuadra tu próximo mes en una tarde.</h2>
+      <p style="margin:0;font-size:16px;line-height:1.6;color:#475569">Te lo enseñamos con tus propios documentos en 30 minutos.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <a href="#demo" style="padding:15px 24px;border-radius:10px;background:#091022;color:#fff;font-weight:600;font-size:16px;white-space:nowrap" style-hover="background:#16244A;color:#fff">Solicitar demo gratuita</a>
+      <a href="Landing Cuadra v2.dc.html#precios" style="padding:15px 24px;border-radius:10px;border:1px solid #CBD2DC;font-weight:500;font-size:16px;white-space:nowrap" style-hover="background:#fff;color:#0E1729">Ver precios</a>
+    </div>
+  </div>
+</section>
+
+<footer style="background:#060C1B;color:#AEB8CC;padding:56px 24px 32px">
+  <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:320px">
+        <img src="assets/ays-logo-horizontal.png" alt="ays corp" style="height:26px;width:auto;align-self:flex-start"></img>
+        <p style="margin:0;font-size:14px;line-height:1.6">Automatización financiera y auditoría de cuadre para clínicas, comercios y pymes.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:56px">
+        <sc-for list="{{ menuCols }}" as="col" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+            <span style="font-size:12px;font-weight:600;color:#66738E">{{ col.title }}</span>
+            <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="4"><a href="{{ it.href }}">{{ it.title }}</a></sc-for>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <span style="font-size:12px;font-weight:600;color:#66738E">Legal</span>
+          <a href="#">Aviso legal</a><a href="#">Política de privacidad</a><a href="#">Política de cookies</a><a href="#">Términos del servicio</a>
+        </div>
+      </div>
+    </div>
+    <div style="padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);font-size:13px">© 2026 ays corp · Cuadrā. Todos los derechos reservados.</div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const A = 'oklch(0.76 0.15 165)';
+const PAGES = {
+  ayuda: { group: 'Aprende', title: 'Centro de ayuda', short: 'Guías y respuestas rápidas', sub: 'Guías y respuestas rápidas para sacar partido a Cuadrā desde el primer día, escritas por el mismo equipo que da soporte.' },
+  docs: { group: 'Aprende', title: 'Documentación', short: 'API, integraciones y formatos', sub: 'API, integraciones y formatos. Todo lo que tu equipo técnico necesita para conectar Cuadrā con vuestro ERP, banco o software de gestión.' },
+  blog: { group: 'Aprende', title: 'Blog', short: 'Finanzas y gestión para pymes', sub: 'Finanzas y gestión para pymes. Ideas prácticas para cerrar el mes antes y con menos sorpresas.' },
+  glosario: { group: 'Aprende', title: 'Glosario', short: 'Términos contables explicados', sub: 'Términos contables explicados sin jerga, para que cualquier persona del equipo entienda sus números.' },
+  eventos: { group: 'Conecta', title: 'Eventos y Webinars', short: 'Sesiones en directo y grabadas', sub: 'Sesiones en directo y grabadas con nuestro equipo de producto y asesores financieros invitados.' },
+  demo: { group: 'Conecta', title: 'Solicitar demo', short: '30 minutos con tus documentos', sub: '30 minutos con tus documentos. Te enseñamos Cuadrā con un mes real de tu negocio, no con datos de ejemplo.' },
+  soporte: { group: 'Conecta', title: 'Soporte técnico', short: 'Habla con nuestro equipo', sub: 'Habla con nuestro equipo. Personas reales, con tiempos de respuesta garantizados por contrato.' }
+};
+const ORDER = ['ayuda', 'docs', 'blog', 'glosario', 'eventos', 'demo', 'soporte'];
+const HELP = [
+  { name: 'Primeros pasos', count: 12, desc: 'Configura tu empresa, sube tu primer lote y entiende tu primer informe.', arts: ['Crear tu cuenta y tu primera empresa', 'Subir tu primer lote de documentos', 'Invitar a tu gestoría o asesor'] },
+  { name: 'Conexión bancaria', count: 9, desc: 'Conecta tus cuentas por PSD2 o importa extractos manualmente.', arts: ['Conectar un banco vía PSD2', 'Importar un extracto en Norma 43', 'Qué hacer si tu banco no aparece'] },
+  { name: 'Facturación electrónica', count: 8, desc: 'Importa facturas emitidas y recibidas desde tu software actual.', arts: ['Importar facturas desde tu programa de facturación', 'Facturas Verifactu y TicketBAI', 'Formatos de factura admitidos'] },
+  { name: 'Resolución de errores', count: 14, desc: 'Qué significa cada incidencia y cómo resolverla en pocos clics.', arts: ['Una factura aparece como «Sin cobro»', 'Diferencias por redondeo o retenciones', 'Documento ilegible o duplicado'] }
+];
+const FAQ = [
+  ['¿Cuánto tarda la puesta en marcha?', 'La mayoría de clientes obtiene su primer informe de cuadre el mismo día. Conectar los bancos lleva unos minutos; importar el histórico, según el volumen, entre uno y tres días.'],
+  ['¿Tengo que cambiar mi software de facturación o contabilidad?', 'No. Cuadrā trabaja con las exportaciones que ya generas y se integra vía API con los ERP más habituales. Tu equipo sigue usando sus herramientas.'],
+  ['¿La IA puede modificar un importe?', 'No. La IA solo lee y estructura los documentos. Todos los cálculos y cruces los realiza un motor determinista con reglas que puedes revisar línea a línea.'],
+  ['¿Dónde se guardan mis datos?', 'En servidores ubicados en la Unión Europea, cifrados en tránsito y en reposo. Nunca usamos tus datos para entrenar modelos de terceros.'],
+  ['¿Puede acceder mi gestoría?', 'Sí. Puedes invitar a tu asesor con permisos de solo lectura o de revisión, sin coste adicional en los planes Clínicas y Enterprise.'],
+  ['¿Qué ocurre si cancelo?', 'Puedes exportar todos tus informes y documentos en cualquier momento. Tras la cancelación, eliminamos los datos de forma definitiva en un plazo de 30 días.']
+];
+const ENDPOINTS = [
+  ['POST', '/v1/documents', 'Sube facturas, albaranes o extractos (multipart/form-data).'],
+  ['GET', '/v1/documents/{id}', 'Estado de la extracción y campos detectados con su nivel de confianza.'],
+  ['POST', '/v1/reconciliations', 'Lanza un cuadre para una empresa y un periodo.'],
+  ['GET', '/v1/reconciliations/{id}', 'Resultado completo: partidas conciliadas, pendientes e incidencias.'],
+  ['GET', '/v1/issues', 'Discrepancias abiertas, filtrables por tipo, importe o proveedor.'],
+  ['PATCH', '/v1/issues/{id}', 'Marca una incidencia como resuelta o la asigna a un usuario.']
+];
+const MC = { GET: ['rgba(96,165,250,0.14)', '#93C5FD'], POST: ['rgba(52,211,153,0.14)', A], PATCH: ['rgba(251,191,36,0.14)', '#FBBF24'] };
+const POSTS = [
+  { cat: 'Conciliación', t: 'Cómo automatizar la conciliación bancaria sin errores', x: 'Por qué las hojas de cálculo fallan a partir de 200 movimientos al mes, y el método en cuatro pasos que usan las pymes que cierran en dos días.', date: '2 oct 2026', read: '8 min' },
+  { cat: 'Tesorería', t: '5 fugas de dinero ocultas en la tesorería de una pyme', x: 'Cobros parciales que nadie reclama, comisiones duplicadas, abonos de aseguradoras con retención… y cómo detectarlos cada semana.', date: '24 sep 2026', read: '6 min' },
+  { cat: 'Cierre contable', t: 'Guía definitiva del cierre contable mensual', x: 'Checklist completa, calendario tipo y qué tareas puedes delegar o automatizar sin perder control.', date: '17 sep 2026', read: '12 min' },
+  { cat: 'Conciliación', t: 'Norma 43: qué es y cómo aprovechar tus extractos bancarios', x: 'El formato que todos los bancos españoles exportan y casi nadie usa. Qué contiene y por qué es mejor que un PDF.', date: '10 sep 2026', read: '5 min' },
+  { cat: 'Gestión', t: 'Clínicas: cómo cuadrar los pagos de aseguradoras sin perder un euro', x: 'Liquidaciones agrupadas, baremos y retenciones: un caso real de una clínica dental con seis mutuas.', date: '3 sep 2026', read: '7 min' },
+  { cat: 'Tesorería', t: 'Previsión de tesorería a 13 semanas para pymes', x: 'La herramienta que usan los directores financieros para anticipar tensiones de caja, con plantilla incluida.', date: '27 ago 2026', read: '9 min' },
+  { cat: 'Cierre contable', t: 'Qué revisa tu gestoría cada mes (y cómo ponérselo fácil)', x: 'Menos correos de ida y vuelta: qué documentación preparar y en qué formato para que el cierre no se retrase.', date: '20 ago 2026', read: '4 min' }
+];
+const GLOSS = [
+  ['Albarán', 'Documento que acredita la entrega de una mercancía o servicio. No es una factura, pero sirve para comprobar que lo facturado coincide con lo recibido.', 'Ejemplo: el proveedor entrega 40 cajas y el albarán lo registra; si la factura cobra 45, hay una discrepancia.'],
+  ['Amortización', 'Reparto del coste de un bien duradero (maquinaria, equipos) a lo largo de los años en que se usa, en lugar de imputarlo todo de una vez.', 'Un sillón dental de 12.000 € amortizado en 10 años supone 1.200 € de gasto anual.'],
+  ['Conciliación bancaria', 'Proceso de comparar los movimientos del banco con los registros contables para confirmar que coinciden y explicar cualquier diferencia.', 'Es la tarea que Cuadrā automatiza: cada cobro y pago del extracto se empareja con su factura.'],
+  ['Cuenta de resultados', 'Resumen de ingresos y gastos de un periodo que muestra si la empresa ha ganado o perdido dinero.', 'También llamada cuenta de pérdidas y ganancias (PyG).'],
+  ['Devengo', 'Principio contable por el que ingresos y gastos se registran cuando se generan, no cuando se cobran o se pagan.', 'Una factura de septiembre cobrada en octubre es ingreso de septiembre.'],
+  ['EBITDA', 'Beneficio antes de intereses, impuestos, depreciaciones y amortizaciones. Mide la rentabilidad de la actividad del negocio, sin efectos financieros ni contables.', 'Muy usado para comparar empresas o valorar un negocio.'],
+  ['Factura rectificativa', 'Factura que corrige otra ya emitida, por un error, una devolución o un descuento posterior.', 'Debe referenciar la factura original y su número.'],
+  ['Flujo de caja', 'Diferencia entre el dinero que entra y el que sale de la empresa en un periodo. Una empresa con beneficios puede tener problemas si su flujo de caja es negativo.', 'También conocido como cash flow.'],
+  ['IVA soportado', 'IVA que la empresa paga en sus compras y que, en general, puede deducir del IVA que cobra a sus clientes.', 'Se compara con el IVA repercutido en cada liquidación trimestral.'],
+  ['Motor determinista', 'Sistema de cálculo que, con los mismos datos de entrada, siempre produce exactamente el mismo resultado, siguiendo reglas explícitas y auditables.', 'En Cuadrā, la IA lee los documentos, pero las cuentas las hace siempre el motor determinista.'],
+  ['Norma 43', 'Formato estándar de la banca española para exportar extractos de cuenta en un fichero de texto estructurado.', 'Más fiable que un PDF: incluye fechas valor, conceptos codificados y saldos.'],
+  ['Provisión', 'Importe que se reserva para cubrir una pérdida o gasto probable cuyo importe o fecha exactos aún no se conocen.', 'Por ejemplo, una provisión por clientes de dudoso cobro.'],
+  ['PSD2', 'Directiva europea de servicios de pago que permite a aplicaciones autorizadas acceder, con tu consentimiento, a los movimientos de tus cuentas bancarias.', 'Es la vía por la que Cuadrā lee tus bancos sin que compartas contraseñas.'],
+  ['Retención de IRPF', 'Parte del importe de una factura que el cliente no paga al proveedor sino que ingresa directamente a Hacienda a cuenta de sus impuestos.', 'Origen frecuente de diferencias entre lo facturado y lo cobrado.'],
+  ['Tesorería', 'Gestión del dinero disponible de la empresa: cobros, pagos, saldos bancarios y previsión de liquidez.', 'Su objetivo es que nunca falte caja para pagar a tiempo.']
+];
+const UPCOMING = [
+  { id: 'w1', day: '23', month: 'oct', time: '10:00 CET', dur: '45 min', t: 'Cómo ahorrar 15 horas semanales en el departamento administrativo', who: 'Laura Méndez · Customer Success, Cuadrā' },
+  { id: 'w2', day: '6', month: 'nov', time: '16:00 CET', dur: '60 min', t: 'Cierre mensual en dos días: método paso a paso para pymes', who: 'Javier Ortega · Asesor fiscal invitado' },
+  { id: 'w3', day: '20', month: 'nov', time: '10:00 CET', dur: '45 min', t: 'Clínicas: conciliación de aseguradoras y mutuas sin hojas de cálculo', who: 'Equipo de producto Cuadrā' }
+];
+const PAST = [
+  { t: 'Del Excel al cuadre automático: el caso de un grupo de clínicas', dur: '38:12', date: 'Septiembre 2026', views: '1.240 visualizaciones' },
+  { t: 'Detectar fugas de dinero en tu TPV y pasarelas de pago', dur: '29:40', date: 'Julio 2026', views: '860 visualizaciones' },
+  { t: 'Facturación electrónica 2026: qué cambia para tu pyme', dur: '52:05', date: 'Junio 2026', views: '2.115 visualizaciones' }
+];
+function seeded(seed) { let s = seed; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
+const STATUS = [['Aplicación web', '99,99 %', 1], ['API', '99,98 %', 2], ['Extracción de documentos', '99,95 %', 3], ['Conexiones bancarias (PSD2)', '99,91 %', 4]].map(([n, u, sd]) => {
+  const r = seeded(sd * 77);
+  return { n, u, bars: Array.from({ length: 60 }, () => { const v = r(); return { c: v > 0.975 ? '#FBBF24' : A }; }) };
+});
+
+class Component extends DCLogic {
+  state = { page: 'ayuda', w: typeof window !== 'undefined' ? window.innerWidth : 1200, menu: false, res: false, q: '', faq: 0, cat: 'Todos', gq: '', evSel: 'w1', evDone: false, size: 1, day: 0, time: 1, demoDone: false, prio: 1, ticketDone: false };
+  componentDidMount() {
+    this.onHash = () => { const h = (location.hash || '').slice(1); if (PAGES[h]) { this.setState({ page: h, menu: false, res: false }); window.scrollTo(0, 0); } };
+    this.onHash();
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('hashchange', this.onHash);
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this.onHash); window.removeEventListener('resize', this.onResize); }
+  jump(id) { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: 'smooth' }); }
+  chip(on, dark) { return dark ? { bg: on ? '#F1F4F9' : 'transparent', fg: on ? '#091022' : '#C7D0E0', bd: on ? '#F1F4F9' : 'rgba(255,255,255,0.16)' } : { bg: on ? '#091022' : '#fff', fg: on ? '#fff' : '#334155', bd: on ? '#091022' : '#CBD2DC' }; }
+  renderVals() {
+    const s = this.state, page = s.page, isMobile = s.w < 1000;
+    const item = (k) => ({ ...PAGES[k], href: '#' + k, bg: k === page ? '#F3F5F8' : 'transparent' });
+    const menuCols = [{ title: 'Aprende', items: ORDER.slice(0, 4).map(item) }, { title: 'Conecta', items: ORDER.slice(4).map(item) }];
+    const allArts = HELP.flatMap(c => c.arts.map(t => ({ t, cat: c.name })));
+    const ql = s.q.trim().toLowerCase();
+    const results = ql ? allArts.filter(a => (a.t + ' ' + a.cat).toLowerCase().includes(ql)) : [];
+    const cats = ['Todos', 'Conciliación', 'Tesorería', 'Cierre contable', 'Gestión'];
+    const filtered = s.cat === 'Todos' ? POSTS.slice(1) : POSTS.filter(p => p.cat === s.cat);
+    const gl = s.gq.trim().toLowerCase();
+    const terms = GLOSS.filter(g => !gl || (g[0] + ' ' + g[1]).toLowerCase().includes(gl));
+    const groupsMap = {};
+    terms.forEach(([t, d, ex]) => { const ch = t[0].toUpperCase(); (groupsMap[ch] = groupsMap[ch] || []).push({ t, d, ex }); });
+    const glossGroups = Object.keys(groupsMap).sort().map(ch => ({ ch, id: 'g-' + ch, terms: groupsMap[ch] }));
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(ch => { const has = !!groupsMap[ch]; return { ch, off: !has, bg: has ? 'rgba(255,255,255,0.06)' : 'transparent', fg: has ? '#F1F4F9' : '#3A4766', go: () => this.jump('g-' + ch) }; });
+    const days = []; const d0 = new Date(); let d = new Date(d0); d.setDate(d.getDate() + 1);
+    while (days.length < 5) { if (d.getDay() % 6 !== 0) days.push(new Date(d)); d.setDate(d.getDate() + 1); }
+    const timesL = ['09:30', '11:00', '12:30', '16:00', '17:30'];
+    const sizesL = ['1–10', '11–50', '51–200', '200+'];
+    const priosL = ['Baja', 'Normal', 'Alta', 'Crítica'];
+    const dayLabel = days[s.day].toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    const ev = UPCOMING.find(e => e.id === s.evSel) || UPCOMING[0];
+    const prioTimes = ['48 h laborables', '24 h laborables', '8 h laborables', '1 hora'];
+    return {
+      isMobile, isDesktop: !isMobile, menuVisible: isMobile && s.menu,
+      toggleMenu: () => this.setState(x => ({ menu: !x.menu })), closeMenu: () => this.setState({ menu: false }),
+      resOpen: s.res, resRot: s.res ? 'rotate(180deg)' : 'none',
+      openRes: () => this.setState({ res: true }), closeRes: () => this.setState({ res: false }), toggleRes: () => this.setState(x => ({ res: !x.res })),
+      menuCols, meta: PAGES[page],
+      tabs: ORDER.map(k => ({ title: PAGES[k].title, href: '#' + k, fg: k === page ? '#fff' : '#7F8BA6', line: k === page ? A : 'transparent' })),
+      isAyuda: page === 'ayuda', isDocs: page === 'docs', isBlog: page === 'blog', isGlosario: page === 'glosario', isEventos: page === 'eventos', isDemo: page === 'demo', isSoporte: page === 'soporte',
+      q: s.q, onQ: e => this.setState({ q: e.target.value }), clearQ: () => this.setState({ q: '' }), hasQ: !!ql,
+      results, noResults: !!ql && !results.length, resultsLabel: results.length + (results.length === 1 ? ' resultado' : ' resultados') + ' para «' + s.q.trim() + '»',
+      helpCats: HELP,
+      faqs: FAQ.map(([q, a], i) => ({ q, a, open: s.faq === i, sign: s.faq === i ? '−' : '+', toggle: () => this.setState({ faq: s.faq === i ? -1 : i }) })),
+      contactOpts: [{ t: 'Chat en la aplicación', d: 'Lunes a viernes, de 9:00 a 18:00', href: '#soporte' }, { t: 'soporte@cuadra.app', d: 'Respuesta en menos de 24 h laborables', href: 'mailto:soporte@cuadra.app' }, { t: 'Abrir un ticket', d: 'Para incidencias técnicas con seguimiento', href: '#soporte' }],
+      docNav: [['doc-intro', 'Introducción'], ['doc-auth', 'Autenticación'], ['doc-endpoints', 'Endpoints'], ['doc-webhooks', 'Webhooks'], ['doc-formats', 'Formatos de importación'], ['doc-security', 'Seguridad']].map(([id, t]) => ({ t, go: () => this.jump(id) })),
+      docFacts: [{ k: 'Protocolo', v: 'REST · JSON · HTTPS' }, { k: 'Límite de peticiones', v: '600 / minuto por clave' }, { k: 'Entornos', v: 'Producción y sandbox' }],
+      codeReq: 'curl https://api.cuadra.app/v1/reconciliations \\\n  -H "Authorization: Bearer $CUADRA_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d \'{ "company_id": "cmp_8f2a1c", "period": "2026-10" }\'',
+      codeRes: '{\n  "id": "rec_41d9e07b",\n  "status": "processing",\n  "period": "2026-10",\n  "documents": 1284,\n  "estimated_seconds": 240,\n  "created_at": "2026-10-09T09:14:22Z"\n}',
+      endpoints: ENDPOINTS.map(([m, p, d]) => ({ m, p, d, bg: MC[m][0], fg: MC[m][1] })),
+      webhooks: [{ e: 'document.processed', d: 'Un documento se ha leído y sus campos están disponibles.' }, { e: 'reconciliation.completed', d: 'Un cuadre ha terminado. Incluye el resumen de importes e incidencias.' }, { e: 'issue.created', d: 'Se ha detectado una nueva discrepancia (diferencia, duplicado o impago).' }, { e: 'issue.resolved', d: 'Un usuario ha cerrado una incidencia, con su comentario.' }],
+      formats: [{ f: 'Norma 43', o: 'Extractos de cualquier banco español', n: 'Lectura estructurada. Detecta banco, cuenta y saldos automáticamente.' }, { f: 'CSV', o: 'Bancos, TPV y pasarelas de pago', n: 'Mapeo de columnas que se guarda por origen para futuras importaciones.' }, { f: 'Excel (.xlsx, .xls)', o: 'Exportaciones de ERP y software de gestión', n: 'Admite varias hojas por archivo y cabeceras en cualquier fila.' }, { f: 'Facturae / UBL', o: 'Factura electrónica', n: 'Lectura estructurada sin IA, con validación de firma.' }, { f: 'PDF e imagen', o: 'Facturas y albaranes escaneados', n: 'Extracción con IA. Los campos de baja confianza se marcan para revisión.' }],
+      security: [{ t: 'Alojamiento en la UE', d: 'Toda la infraestructura y las copias de seguridad residen en centros de datos de la Unión Europea.' }, { t: 'Cifrado extremo', d: 'TLS 1.3 en tránsito y AES-256 en reposo, con claves gestionadas y rotadas periódicamente.' }, { t: 'Claves con ámbitos', d: 'Cada clave de API tiene permisos mínimos, puede limitarse por IP y revocarse al instante.' }, { t: 'Auditoría inmutable', d: 'Cada cálculo queda registrado con sus datos de entrada, la regla aplicada y el usuario.' }],
+      blogCats: cats.map(c => ({ name: c, ...this.chip(c === s.cat, true), pick: () => this.setState({ cat: c }) })),
+      showFeatured: s.cat === 'Todos', featured: POSTS[0], posts: filtered,
+      gq: s.gq, onGq: e => this.setState({ gq: e.target.value }), letters, glossGroups, noGloss: !glossGroups.length,
+      upcoming: UPCOMING.map(e => ({ ...e, pick: () => { this.setState({ evSel: e.id, evDone: false }); setTimeout(() => this.jump('ev-form'), 30); } })),
+      past: PAST, evSel: s.evSel, onEvSel: e => this.setState({ evSel: e.target.value }), evDone: s.evDone, evNotDone: !s.evDone, evSelTitle: '«' + ev.t + '», ' + ev.day + ' de ' + ev.month + ' a las ' + ev.time,
+      evSubmit: e => { e.preventDefault(); this.setState({ evDone: true }); }, evReset: () => this.setState({ evDone: false }),
+      demoPoints: [{ n: '01', t: 'Tu mes real, cuadrado en directo', d: 'Procesamos tus extractos y facturas delante de ti. Verás el resultado sobre tus números, no sobre un ejemplo.' }, { n: '02', t: 'Las incidencias que hoy se te escapan', d: 'Cobros parciales, duplicados y diferencias con aseguradoras o proveedores, con su importe exacto.' }, { n: '03', t: 'Cómo encaja con tu gestoría y tu software', d: 'Qué cambia en el día a día del equipo administrativo y qué recibe tu asesor cada mes.' }, { n: '04', t: 'Precio cerrado para tu volumen', d: 'Sales de la llamada con una propuesta concreta, sin letra pequeña ni permanencia.' }],
+      agenda: [{ m: '0–5 min', t: 'Tu negocio y tu cierre actual', w: 1, bg: 'rgba(255,255,255,0.02)' }, { m: '5–20 min', t: 'Cuadre en directo con tus documentos', w: 3, bg: 'rgba(52,211,153,0.07)' }, { m: '20–30 min', t: 'Preguntas y siguientes pasos', w: 2, bg: 'rgba(255,255,255,0.02)' }],
+      sizes: sizesL.map((l, i) => ({ l, ...this.chip(s.size === i), pick: () => this.setState({ size: i }) })),
+      days: days.map((dt, i) => ({ wd: dt.toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', ''), n: dt.getDate(), ...this.chip(s.day === i), pick: () => this.setState({ day: i }) })),
+      times: timesL.map((l, i) => ({ l, ...this.chip(s.time === i), pick: () => this.setState({ time: i }) })),
+      slotLabel: days[s.day].toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }).replace('.', '') + ', ' + timesL[s.time],
+      demoDone: s.demoDone, demoNotDone: !s.demoDone, demoSummary: 'Nos vemos el ' + dayLabel + ' a las ' + timesL[s.time] + ' (CET). Duración: 30 minutos por videollamada.',
+      demoSubmit: e => { e.preventDefault(); this.setState({ demoDone: true }); }, demoReset: () => this.setState({ demoDone: false }),
+      status: STATUS,
+      sla: [{ p: 'Comercios', c: 'Email y chat', crit: '8 h', norm: '24 h laborables', col: '#F1F4F9' }, { p: 'Clínicas', c: 'Email, chat y teléfono', crit: '4 h', norm: '8 h laborables', col: '#F1F4F9' }, { p: 'Enterprise', c: 'Todos los canales, 24/7', crit: '1 h', norm: '4 h', col: A }],
+      entChannels: [{ t: 'Línea directa 24/7', d: 'Teléfono dedicado para incidencias críticas, sin centralita.' }, { t: 'Canal compartido', d: 'Slack o Microsoft Teams con tu equipo y el nuestro.' }, { t: 'Gestor de cuenta', d: 'Una persona que conoce tu operativa y tus integraciones.' }, { t: 'Revisión trimestral', d: 'Análisis de incidencias, mejoras y próximos lanzamientos.' }],
+      prios: priosL.map((l, i) => ({ l, ...this.chip(s.prio === i), pick: () => this.setState({ prio: i }) })),
+      ticketDone: s.ticketDone, ticketNotDone: !s.ticketDone, ticketMsg: 'Prioridad ' + priosL[s.prio].toLowerCase() + '. Una persona del equipo te responderá en un máximo de ' + prioTimes[s.prio] + ' (Enterprise: según tu contrato).',
+      ticketSubmit: e => { e.preventDefault(); this.setState({ ticketDone: true }); }, ticketReset: () => this.setState({ ticketDone: false })
+    };
+  }
+}
+</script>
+</body>
+</html>
